@@ -1,0 +1,143 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=3227
+
+A simple indent plugin for javascript
+
+Repository: http://github.com/JiangMiao/simple-javascript-indenter
+Screenshot: http://www.jiangmiao.org/blog/wp-content/uploads/2010/09/vim_simple_javascript_indenter_v1.2.0.png
+
+==Options==
+g:SimpleJsIndenter_BriefMode (default 0)
+  set 1 to turn brief mode on.
+
+===About Brief Mode===
+Add 'let g:SimpleJsIndenter_BriefMode = 1' to ~/.vimrc to use brief mode.
+
+In Brief Mode script will not indent more than one shiftwidth each line.
+eg:
+For a lot of people prefer set shiftwidth to 4, so in normal mode, it will indent looks like
+each(function() {
+........something(); // indent 2 shiftwidth
+});
+(((
+............something(); // indent 3 shiftwidth
+)));
+
+In brief mode it will indent as
+each(function() {
+....something(); // indent 1 shiftwidth
+});
+(((
+....something();
+)))
+
+===ATTENTION===
+Be sure to always close the brackets with the same level as open, or the after code will not indent correctly.
+eg:
+function() {
+....each(function() {
+....} // should use }); instead of }
+);    // already indented..
+something();
+}
+
+
+== Indent Effects  ==
+/*
+* Comment Test 
+* function() {
+*/
+{
+  /* a [{( */
+  // b [{(
+  comment('/* com', a /* [{( */); /* c */ // d
+  ok();
+  // Assign Test
+  var a, /* { */
+      b, // [
+      c = '{'
+  var a = "Hello" +
+          "World"
+  d = function() {
+    aoeu
+  }
+  var k = function() {
+    var k=3,
+        m=4
+  }
+
+  var rurl = /{[('"/,
+      r20 = /%20/g,
+
+  a = 1,
+  b = 2
+  a = 1 +
+      2 *
+      3
+}
+
+// Function nested
+;(function($) {
+    $(document).ready(function() {
+        $('#foo').click(function() {
+            $.post(url, {
+                a: 1, 
+                b: 2,
+              }, function() {
+                ok(); 
+              }
+            );
+        });
+    });
+})(jQuery);
+
+// Array Object Test
+string_test("('",'("',"[",'{',"\"{","\&#039{"); 
+{
+  array_object_test: [
+    1,
+    2,
+    {
+      a: [3,4],
+      b: [
+        3,
+        4
+      ],
+      c: string_test("('",'("',"[",'{',"\"{","\&#039{"),
+      function_test: function() {
+        return 0;
+      },
+      one_line_function_test: function() { return [1] }
+    }
+  ]
+}
+
+// One Line Test
+{
+  if( a == b &&
+    c == d ||
+    e == f) 
+  {
+    ok();
+  }
+  if(a) {
+    b;
+  } else {
+    e;
+  }
+  if(a)
+    b;
+  else if(k) {
+    aeou
+  } else
+    c;
+  while(true)
+    foo += 1;
+  try
+    a;
+  catch
+    b;
+  finally
+    c;
+  ok();
+}
+
