@@ -1,29 +1,35 @@
 /*
 * Comment Test 
+* function() {
 */
 {
   /* a [{( */
   // b [{(
   comment('/* com', a /* [{( */); /* c */ // d
-  ok();
+    ok();
+  // Assign Test
   var a, /* { */
       b, // [
       c = '{'
-  var a = 1,
-      c = 0;
+  var a = "Hello" +
+          (3+4) +
+          "World"
+  d = function() {
+    aoeu
+  }
+  var k = function() {
+    var k=3,
+        m=4
+  }
+
+  var rurl = /{[('"/,
+      r20 = /%20/g,
+
+  a = 1,
+  b = 2
   a = 1 +
       2 *
       3
-  c = 1+
-      2+
-      3
-  d;
-  if( a == b &&
-    c == d ||
-    e == f) 
-  {
-    ok();
-  }
 }
 
 // Function nested
@@ -60,4 +66,36 @@ string_test("('",'("',"[",'{',"\"{","\\'{");
       one_line_function_test: function() { return [1] }
     }
   ]
+}
+
+// One Line Test
+{
+  if( a == b &&
+    c == d ||
+    e == f) 
+  {
+    ok();
+  }
+  if(a) {
+    b;
+  } else {
+    e;
+  }
+  if (a)
+    b;
+  if(a)
+    b;
+  else if(k) {
+    aeou
+  } else
+    c;
+  while(true)
+    foo += 1;
+  try
+    a;
+  catch
+    b;
+  finally
+    c;
+  ok();
 }
