@@ -51,8 +51,7 @@
                 b: 2,
               }, function() {
                 ok(); 
-              }
-            );
+            });
         });
     });
 })(jQuery);
@@ -143,6 +142,13 @@ query = query.replace(/\=\s*([^'"\]]*)\s*\]/g, "='$1']");
   function a() {
     $('"', {'b'}, function() {
     });
+  }
+
+  test(//aoeuaou{
+    hello();
+  );
+  test(/*a'*/,'ee') {
+    foo();
   }
 }
 
