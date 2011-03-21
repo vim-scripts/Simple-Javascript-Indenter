@@ -1,8 +1,8 @@
 This is a mirror of http://www.vim.org/scripts/script.php?script_id=3227
 
-A simple indent plugin for javascript
+A simple indent plugin for javascript, 
 
-Repository: http://github.com/JiangMiao/simple-javascript-indenter
+Repository: http://github.com/jiangmiao/simple-javascript-indenter
 Screenshot: http://www.jiangmiao.org/blog/wp-content/uploads/2010/09/vim_simple_javascript_indenter_v1.2.0.png
 
 ==Options==
