@@ -1,8 +1,8 @@
 " Vim indent file
 " Language:	JavaScript
 " Maintainer:	JiangMiao <jiangfriend@gmail.com>
-" Last Change:  2011-10-13
-" Version: 1.4.4
+" Last Change:  2011-10-14
+" Version: 1.4.5
 " Homepage: http://www.vim.org/scripts/script.php?script_id=3227
 " Repository: https://github.com/jiangmiao/simple-javascript-indenter
 
@@ -86,7 +86,7 @@ function! DoIndentPrev(ind,str)
   let ind = a:ind + (ind_add - ind_dec) * &sw
 
   if (match(' '.pline, s:expr_case)!=-1)
-    let ind = ind - &sw * g:SimpleJsIndenter_CaseIndentLevel
+    let ind = float2nr(ind - &sw * g:SimpleJsIndenter_CaseIndentLevel)
   endif
 
   if match(pline, s:expr_comment_start) != -1
@@ -130,7 +130,7 @@ function! DoIndent(ind, str)
 
 
   if (match(' '.line, s:expr_case)!=-1)
-    let ind = ind + &sw * g:SimpleJsIndenter_CaseIndentLevel
+    let ind = float2nr(ind + &sw * g:SimpleJsIndenter_CaseIndentLevel)
   endif
 
   if ind<0
@@ -154,51 +154,38 @@ function! TrimLine(pline)
   while 1 
     let c = ''
     let base_pos = min_pos
-    let min_pos = -1
-    let pos = match(line, '''', base_pos)
-    if pos != -1 && (pos < min_pos||min_pos==-1)
-      let c = ''''
-      let min_pos = pos
-    endif
-    let pos = match(line, '"', base_pos)
-    if pos != -1 && (pos < min_pos||min_pos==-1)
-      let c = '"'
-      let min_pos = pos
-    endif
-    let pos = match(line, '/', base_pos)
-    if pos != -1 && (pos < min_pos||min_pos==-1)
-      let c = '/'
-      let min_pos = pos
-    endif
+    let min_pos = match(line, '[''"/]', base_pos)
     if min_pos == -1
       let new_line .= strpart(line, base_pos)
       break
     endif
+    let c = line[min_pos]
 
-    let sub_line = strpart(line, min_pos)
     let new_line .= strpart(line, base_pos, min_pos - base_pos)
+    let sub_line = ''
 
     if c == ''''
-      let sub_line = matchstr(sub_line, "^'[^']*'")
+      let sub_line = matchstr(line, "^'.\\{-}'", min_pos)
       if sub_line != ''
         let new_line .= '_'
       endif
     elseif c == '"'
-      let sub_line = matchstr(sub_line, '^"[^"]*"')
+      let sub_line = matchstr(line, '^".\{-}"', min_pos)
       if sub_line != ''
         let new_line .= '_'
       endif
     elseif c == '/'
       " Skip all if match a comment
       if line[min_pos+1] == '/' 
-        let sub_line = matchstr(sub_line, '^/.*')
+        let sub_line = matchstr(line, '^/.*', min_pos)
       elseif line[min_pos+1] == '*'
-        let sub_line = matchstr(sub_line, '^/\*.\{-}\*/')
+        let sub_line = matchstr(line, '^/\*.\{-}\*/', min_pos)
       else
         " /.../ sometimes is not a regexp, (a / b); // c
-        let sub_line = matchstr(sub_line, '^/[^/]\+/\([^/]\|$\)')
-        if sub_line != ''
+        let m = matchlist(line, '^\(/[^/]\+/\)\([^/]\|$\)', min_pos)
+        if len(m)
           let new_line .= '_'
+          let sub_line = m[1]
         endif
       endif
     endif
@@ -220,7 +207,7 @@ function! TrimLine(pline)
   let new_line = ''
   while new_line != line
     let new_line = line
-    let line = substitute(new_line,'\(([^)(]*)\|\[[^\][]*\]\|{[^}{]*}\)','_','g')
+    let line = substitute(line,'\(([^)(]*)\|\[[^\][]*\]\|{[^}{]*}\)','_','g')
   endwhile
 
   " Trim Blank
